@@ -10,29 +10,53 @@ import './styles.css'
 function Accordion() {
 
     const [selected, setSelected] = useState(null);
+    const [enableMultiSelection, setEnableMultiSelection] = useState(false)
+    const [multipleSelected, setMultipleSelected] = useState([])
 
     function handleSingleSelection(getCurrentId) {
 
         setSelected(getCurrentId === selected ? null : getCurrentId);
 
     }
-    console.log(selected);
+
+    function handleMultiSelection(getCurrentId) {
+        let copyMultiple = [...multipleSelected];
+        const findIndexOfCurrentId = copyMultiple.indexOf(getCurrentId)
+
+        console.log(findIndexOfCurrentId);
+        if (findIndexOfCurrentId === -1) copyMultiple.push(getCurrentId)
+        else copyMultiple.splice(findIndexOfCurrentId, 1)
+
+        setMultipleSelected(copyMultiple)
+
+    }
+
+    console.log(selected, multipleSelected);
 
     return (
         <div className="wrapper">
+            <button onClick={() => setEnableMultiSelection(!enableMultiSelection)}>Enable multi selection</button>
             <div className="accordion">
                 {data && data.length > 0 ? (
-                    data.map((dataItem) => (
+                    data.map((data) => (
                         <div className="item">
-                            <div onClick={() => handleSingleSelection(dataItem.id)} className="title">
-                                <h3>{dataItem.question}</h3>
+                            <div onClick={enableMultiSelection
+                                ? () => handleMultiSelection(data.id)
+                                : () => handleSingleSelection(data.id)} className="title">
+                                <h3>{data.question}</h3>
                                 <span>+</span>
                             </div>
                             {
-                                selected === dataItem.id ?
-                                    <div className="content">{dataItem.answer}</div>
-                                    : null
+                                enableMultiSelection ?
+                                    multipleSelected.indexOf(data.id) !== -1 &&
+                                    <div className="content">{data.answer}</div> :
+                                    selected === data.id && <div className="content">{data.answer}</div>
                             }
+                            {/* {
+                                selected === data.id || multipleSelected.indexOf(data.id) !== -1 ?
+                                    <div className="content">{data.answer}</div>
+                                    : null
+                            } */}
                         </div>
                     ))
                 ) : (

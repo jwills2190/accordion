@@ -4,6 +4,17 @@
     width: 100vw;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.wrapper button {
+    padding: 10px 20px;
+    background-color: teal;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    cursor: pointer;
 }
 
 .accordion {
@@ -12,7 +23,7 @@
 }
 
 .item {
-    background: navy;
+    background: teal;
     margin-bottom: 10px;
     padding: 10px 20px;
 }
